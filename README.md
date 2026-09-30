@@ -2,7 +2,7 @@
 
 Cinematic wedding photography & films website. Next.js 16 · React 19 · React Three Fiber · GSAP · Lenis.
 
-**Live:** https://rajibstudio.github.io/RAJIBSTUDIO2/
+**Live:** https://rajibstudio.github.io/RAJIBSTUDIO2/ · **3D Biye Bari:** https://rajibstudio.github.io/RAJIBSTUDIO2/biye-bari/
 
 ```bash
 npm install
@@ -48,10 +48,20 @@ Debug URL flags: `?tier=high|medium|low` forces a tier, `?capture=N` renders sho
 
 Re-render the fallback stills after changing the scene: `node scripts/capture-stills.mjs` (see the header of that file).
 
+## 3D Biye Bari (`/biye-bari/`)
+
+A walkable, game-style 3D Bengali wedding house, built entirely in code (`src/components/tour`): the lit-up lane, the Shubho Bibaho gate and the groom's car, the rajbari's courtyard and verandas, the chhadnatala (the hero's mandap, couple and photographer, plus the priest), the reception stage, the feast, the tattwa gifts and a photo corner.
+
+- **Controls:** W A S D or arrows to walk, mouse to look, Shift to run, 1–8 to jump to a place, P to take a photo (saved as a JPEG), M for the map, Esc for the menu. On phones the left thumb walks and the right thumb looks.
+- **Guided tour:** visits all eight places automatically, with captions.
+- `layout.ts` is the floor plan (walls, floors, steps, seats, guests, zones, tour stops). Walking and collisions read it directly, so it can be tested in plain Node.
+- The house is merged into a few meshes; flowers, chairs, guests and props are instanced; the string lights are GPU point clouds animated in a shader.
+- Debug: `?tier=high|medium|low` forces a quality level, `?capture=N` renders tour stop N.
+
 ## Structure
 
 ```
-src/app                 layout (fonts), page, /credits, 404, icon
+src/app                 layout (fonts), page, /biye-bari, /credits, 404, icon
 src/lib                 content.ts (all copy + PREVIEW switch), gallery.ts (photo metadata), device.ts (tiers),
                         imageLoader.ts + image-sizes.json (static images), site.ts (base path)
 assets/gallery          source photographs (build input; web sizes are generated into public/optimized)
@@ -60,6 +70,7 @@ src/components/three    Experience (Canvas), Director, Mandap, Flowers, Couple, 
                         MirrorlessCamera, Lighting, Atmosphere, PostFX, procedural textures/geometry
 src/components/sections About, Stories, Portfolio, Films, Services, Packages, Testimonials, Social, Contact, Footer
 src/components/ui       SmoothScroll (Lenis+GSAP), Lightbox (FLIP), Reveal, Nav
+src/components/tour     3D Biye Bari: floor plan & walking rules, house, lane, rooms, lights, player, overlay UI
 ```
 
 ## Before launch — replace placeholders

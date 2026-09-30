@@ -3,6 +3,7 @@ import { LightboxProvider } from "@/components/ui/Lightbox";
 import { Nav } from "@/components/ui/Nav";
 import { Hero } from "@/components/hero/Hero";
 import { About } from "@/components/sections/About";
+import { TourTeaser } from "@/components/sections/TourTeaser";
 import { Stories } from "@/components/sections/Stories";
 import { Portfolio } from "@/components/sections/Portfolio";
 import { Films } from "@/components/sections/Films";
@@ -21,6 +22,7 @@ export default function Home() {
         <main>
           <Hero />
           <About />
+          <TourTeaser />
           <Stories />
           <Portfolio />
           <Films />

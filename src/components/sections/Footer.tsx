@@ -16,11 +16,17 @@ export function Footer() {
         </div>
         <div className={styles.cols}>
           <nav aria-label="Footer">
-            {NAV.map((n) => (
-              <a key={n.href} href={n.href}>
-                {n.label}
-              </a>
-            ))}
+            {NAV.map((n) =>
+              n.href.startsWith("/") ? (
+                <Link key={n.href} href={n.href}>
+                  {n.label}
+                </Link>
+              ) : (
+                <a key={n.href} href={n.href}>
+                  {n.label}
+                </a>
+              ),
+            )}
           </nav>
           <div className={styles.social}>
             <a href={BRAND.instagram} target="_blank" rel="noreferrer">

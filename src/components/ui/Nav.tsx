@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { NAV } from "@/lib/content";
 import styles from "./nav.module.css";
@@ -43,11 +44,17 @@ export function Nav() {
       </a>
 
       <nav className={styles.links} aria-label="Primary">
-        {NAV.map((n) => (
-          <a key={n.href} href={n.href} onClick={() => setOpen(false)}>
-            {n.label}
-          </a>
-        ))}
+        {NAV.map((n) =>
+          n.href.startsWith("/") ? (
+            <Link key={n.href} href={n.href} className={styles.special} onClick={() => setOpen(false)}>
+              {n.label}
+            </Link>
+          ) : (
+            <a key={n.href} href={n.href} onClick={() => setOpen(false)}>
+              {n.label}
+            </a>
+          ),
+        )}
       </nav>
 
       <a href="#contact" className={`btn btn-gold btn-sm ${styles.cta}`}>

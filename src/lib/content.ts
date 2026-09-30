@@ -30,6 +30,7 @@ export const BRAND = {
 export const NAV = [
   { href: "#about", label: "Studio" },
   { href: "#stories", label: "Stories" },
+  { href: "/biye-bari/", label: "3D Tour" },
   { href: "#portfolio", label: "Portfolio" },
   { href: "#films", label: "Films" },
   { href: "#packages", label: "Packages" },

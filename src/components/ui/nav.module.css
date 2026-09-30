@@ -68,6 +68,9 @@
 .links a:hover {
   color: var(--ivory);
 }
+.links a.special {
+  color: var(--gold-2);
+}
 .links a:hover::after {
   transform: scaleX(1);
   transform-origin: left;

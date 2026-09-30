@@ -15,7 +15,8 @@ const HALF = 1.55; // pillar offset from centre
 const PILLAR_H = 2.85;
 
 /** Traditional Bengali chhadnatala: alpana-painted platform, carved pillars, silk canopy, banana plants. */
-export function Mandap({ tier }: { tier: Tier }) {
+/** `floor` and `backdrop` are the hero stage set; the 3D walkthrough builds its own courtyard around the mandap. */
+export function Mandap({ tier, floor = true, backdrop = true }: { tier: Tier; floor?: boolean; backdrop?: boolean }) {
   const m = materials();
 
   const pillarGeo = useMemo(
@@ -203,6 +204,7 @@ export function Mandap({ tier }: { tier: Tier }) {
   return (
     <group>
       {/* Venue floor */}
+      {floor && (
       <mesh rotation-x={-Math.PI / 2} receiveShadow>
         <planeGeometry args={[60, 60]} />
         {tier === "high" ? (
@@ -224,6 +226,7 @@ export function Mandap({ tier }: { tier: Tier }) {
           <primitive object={m.floorDark} attach="material" />
         )}
       </mesh>
+      )}
 
       {/* Aisle runner */}
       <mesh rotation-x={-Math.PI / 2} position={[0, 0.004, 5.2]} receiveShadow>
@@ -352,14 +355,18 @@ export function Mandap({ tier }: { tier: Tier }) {
       <Flames positions={candleFlames} size={0.035} glowSize={0.25} />
 
       {/* Velvet backdrop */}
-      <mesh geometry={drapeGeo} material={m.velvet} position={[0, 3.6, -3.4]} receiveShadow />
-      <mesh geometry={drapeGeo} material={m.velvet} position={[-6.2, 3.6, 1.5]} rotation-y={Math.PI / 2.4} />
-      <mesh geometry={drapeGeo} material={m.velvet} position={[6.2, 3.6, 1.5]} rotation-y={-Math.PI / 2.4} />
+      {backdrop && (
+        <>
+          <mesh geometry={drapeGeo} material={m.velvet} position={[0, 3.6, -3.4]} receiveShadow />
+          <mesh geometry={drapeGeo} material={m.velvet} position={[-6.2, 3.6, 1.5]} rotation-y={Math.PI / 2.4} />
+          <mesh geometry={drapeGeo} material={m.velvet} position={[6.2, 3.6, 1.5]} rotation-y={-Math.PI / 2.4} />
+        </>
+      )}
     </group>
   );
 }
 
-function BananaPlant({ position, seed }: { position: [number, number, number]; seed: number }) {
+export function BananaPlant({ position, seed }: { position: [number, number, number]; seed: number }) {
   const m = materials();
   const group = useRef<THREE.Group>(null);
   const leafGeo = useMemo(() => {
