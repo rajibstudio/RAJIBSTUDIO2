@@ -37,7 +37,9 @@ export function Player({ capture }: { capture?: number }) {
   }, [camera, size.width, size.height]);
 
   useFrame(({ clock }, rawDt) => {
-    const dt = Math.min(rawDt, 0.05);
+    // Clamp long frames (tab switches, shader compiles) without slowing slower devices:
+    // down to 10 fps, walking and flights still run in real time.
+    const dt = Math.min(rawDt, 0.1);
     const t = clock.elapsedTime;
     let bob = 0;
 
