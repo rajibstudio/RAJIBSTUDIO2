@@ -1,0 +1,119 @@
+.about {
+  background:
+    radial-gradient(60% 50% at 90% 20%, rgba(59, 33, 69, 0.45), transparent 70%),
+    var(--ink);
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: clamp(3rem, 7vw, 8rem);
+  align-items: center;
+}
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1.2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+.stats strong {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  line-height: 1;
+  color: var(--gold-2);
+}
+.stats div > span {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ivory-faint);
+}
+.signature {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--ivory);
+}
+.signature span {
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ivory-faint);
+}
+.visual {
+  position: relative;
+  min-height: 42rem;
+}
+.main,
+.detail {
+  position: absolute;
+  overflow: hidden;
+}
+.main img,
+.detail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.main {
+  top: 0;
+  right: 0;
+  width: 78%;
+  aspect-ratio: 4 / 5.4;
+}
+.main::after {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 1px solid rgba(228, 199, 134, 0.35);
+  pointer-events: none;
+}
+.detail {
+  left: 0;
+  bottom: -2rem;
+  width: 44%;
+  aspect-ratio: 4 / 3.2;
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.8);
+}
+.quote {
+  position: absolute;
+  right: 0;
+  bottom: -5rem;
+  text-align: right;
+  max-width: 18rem;
+}
+.quote p {
+  font-size: 1.5rem;
+  color: var(--gold-2);
+}
+.quote span {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--ivory-dim);
+}
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .visual {
+    min-height: 34rem;
+    margin-bottom: 4rem;
+  }
+  .stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+  }
+}
