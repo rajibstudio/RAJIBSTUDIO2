@@ -6,6 +6,7 @@ import { RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
 import { materials } from "./materials";
 import { heroState } from "../hero/heroState";
+import { asset } from "@/lib/site";
 
 /**
  * A full-frame mirrorless body with a fast 85mm prime.
@@ -25,7 +26,7 @@ export const MirrorlessCamera = forwardRef<THREE.Group>(function MirrorlessCamer
   const blades = useRef<THREE.Group[]>([]);
   const screenMat = useMemo(() => m.screen.clone(), [m]);
   const lampMat = useMemo(() => m.afLamp.clone(), [m]);
-  const lcd = useLoader(THREE.TextureLoader, "/images/scene/lcd.jpg");
+  const lcd = useLoader(THREE.TextureLoader, asset("/images/scene/lcd.jpg"));
 
   useEffect(() => {
     lcd.colorSpace = THREE.SRGBColorSpace;

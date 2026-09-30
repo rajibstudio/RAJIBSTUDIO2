@@ -3,10 +3,13 @@ import credits from "./gallery-credits.json";
 /**
  * Image library.
  *
- * NOTE: The photographs shipped in /public/images/gallery are openly licensed
- * placeholders sourced from Wikimedia Commons (see /credits). Replace them with
- * Rajib Studio's own work before going live — swap the files and keep this
- * metadata in sync. Everything else (layout, lightbox, stories) reads from here.
+ * NOTE: The photographs in /assets/gallery are openly licensed placeholders
+ * sourced from Wikimedia Commons (see /credits). Replace them with Rajib Studio's
+ * own work before going live — swap the files and keep this metadata in sync.
+ * Everything else (layout, lightbox, stories) reads from here.
+ *
+ * `src` below is the key the image loader understands ("/images/gallery/<name>.jpg");
+ * the files actually served are the WebP sizes made by scripts/optimize-images.mjs.
  */
 export type Category = "Rituals" | "Portraits" | "Candid" | "Couples" | "Details";
 

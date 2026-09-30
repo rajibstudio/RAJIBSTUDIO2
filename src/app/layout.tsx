@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Manrope, Noto_Serif_Bengali } from "next/font/google";
+import { PREVIEW } from "@/lib/content";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const display = Cormorant_Garamond({
@@ -23,7 +25,9 @@ const bengali = Noto_Serif_Bengali({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://rajibstudio.in"),
+  metadataBase: new URL(`${SITE_URL}/`),
+  // Keep search engines out while the site still shows sample content (see PREVIEW in content.ts).
+  robots: PREVIEW ? { index: false, follow: false } : undefined,
   title: "RAJIB STUDIO — Cinematic Wedding Photography & Films | Kolkata",
   description:
     "স্মৃতিকে করি চিরস্থায়ী — Rajib Studio creates cinematic Bengali & Indian wedding photography, candid portraits and wedding films in Kolkata and destinations worldwide.",
@@ -31,7 +35,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "RAJIB STUDIO — Cinematic Wedding Photography & Films",
     description: "স্মৃতিকে করি চিরস্থায়ী — cinematic wedding photography & films.",
-    images: ["/images/scene/shot-0.jpg"],
+    images: [`${SITE_URL}/images/scene/shot-0.jpg`],
     type: "website",
   },
 };

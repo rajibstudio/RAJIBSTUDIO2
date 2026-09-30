@@ -5,6 +5,8 @@
  * Coordinates are metres. The mandap is centred on the origin, the couple faces
  * each other on the platform and the photographer stands in front-right of them.
  */
+import { asset } from "@/lib/site";
+
 export type V3 = [number, number, number];
 
 export type Anchor = "world" | "photographer" | "lens";
@@ -71,7 +73,7 @@ export const SHOTS: Shot[] = [
     iso: 800,
     shutter: "1/50",
     aperture: "T2.8",
-    still: "/images/scene/shot-0.jpg",
+    still: asset("/images/scene/shot-0.jpg"),
     stillFocus: [0.47, 0.42],
   },
   {
@@ -89,7 +91,7 @@ export const SHOTS: Shot[] = [
     iso: 1250,
     shutter: "1/50",
     aperture: "T2.0",
-    still: "/images/scene/shot-1.jpg",
+    still: asset("/images/scene/shot-1.jpg"),
     stillFocus: [0.44, 0.4],
   },
   {
@@ -107,7 +109,7 @@ export const SHOTS: Shot[] = [
     iso: 1600,
     shutter: "1/50",
     aperture: "T1.8",
-    still: "/images/scene/shot-2.jpg",
+    still: asset("/images/scene/shot-2.jpg"),
     stillFocus: [0.5, 0.42],
   },
   {
@@ -125,7 +127,7 @@ export const SHOTS: Shot[] = [
     iso: 1600,
     shutter: "1/50",
     aperture: "T1.5",
-    still: "/images/scene/shot-3.jpg",
+    still: asset("/images/scene/shot-3.jpg"),
     stillFocus: [0.5, 0.36],
   },
   {
@@ -143,7 +145,7 @@ export const SHOTS: Shot[] = [
     iso: 2000,
     shutter: "1/50",
     aperture: "T1.4",
-    still: "/images/scene/shot-4.jpg",
+    still: asset("/images/scene/shot-4.jpg"),
     stillFocus: [0.5, 0.4],
   },
   {
@@ -161,7 +163,7 @@ export const SHOTS: Shot[] = [
     iso: 2000,
     shutter: "1/50",
     aperture: "T1.4",
-    still: "/images/scene/shot-5.jpg",
+    still: asset("/images/scene/shot-5.jpg"),
     stillFocus: [0.5, 0.4],
   },
   {
@@ -179,7 +181,7 @@ export const SHOTS: Shot[] = [
     iso: 1000,
     shutter: "1/100",
     aperture: "T2.0",
-    still: "/images/scene/shot-6.jpg",
+    still: asset("/images/scene/shot-6.jpg"),
     stillFocus: [0.5, 0.38],
   },
   {
@@ -197,7 +199,7 @@ export const SHOTS: Shot[] = [
     iso: 400,
     shutter: "1/200",
     aperture: "T1.2",
-    still: "/images/scene/shot-7.jpg",
+    still: asset("/images/scene/shot-7.jpg"),
     stillFocus: [0.5, 0.5],
   },
 ];

@@ -31,7 +31,8 @@ export function Testimonials() {
     <section ref={root} id="testimonials" className={styles.testimonials} onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} aria-roledescription="carousel" aria-label="Client testimonials">
       {BACKDROPS.map((id, k) => (
         <div key={id} className={styles.bg} data-on={k === i}>
-          <Image src={photo(id).src} alt="" fill sizes="100vw" />
+          {/* Heavily blurred backdrop, so a small file looks the same as a large one */}
+          <Image src={photo(id).src} alt="" fill sizes="33vw" />
         </div>
       ))}
       <div className={`container ${styles.inner}`}>

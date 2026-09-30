@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BRAND, NAV } from "@/lib/content";
+import { BRAND, NAV, PREVIEW } from "@/lib/content";
 import styles from "./footer.module.css";
 
 export function Footer() {
@@ -34,8 +34,9 @@ export function Footer() {
             </a>
           </div>
           <div className={styles.contact}>
-            <a href={BRAND.phoneHref}>{BRAND.phone}</a>
-            <a href={`mailto:${BRAND.email}`}>{BRAND.email}</a>
+            {/* Plain text while the contact details are placeholders (see PREVIEW in content.ts) */}
+            {PREVIEW ? <span>{BRAND.phone}</span> : <a href={BRAND.phoneHref}>{BRAND.phone}</a>}
+            {PREVIEW ? <span>{BRAND.email}</span> : <a href={`mailto:${BRAND.email}`}>{BRAND.email}</a>}
             <span>{BRAND.reach}</span>
           </div>
         </div>

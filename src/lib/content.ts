@@ -3,6 +3,14 @@
  * Contact details, prices and testimonials are placeholders — replace before launch.
  */
 
+/**
+ * Preview mode: keep this `true` while the phone, WhatsApp and email below are placeholders.
+ * While it's on, the booking form doesn't send anything, the call/email links are plain text
+ * (so visitors never message a stranger's number), and search engines are asked not to index the site.
+ * Set it to `false` once the real details are in.
+ */
+export const PREVIEW = true;
+
 export const BRAND = {
   name: "RAJIB STUDIO",
   taglineBn: "স্মৃতিকে করি চিরস্থায়ী",

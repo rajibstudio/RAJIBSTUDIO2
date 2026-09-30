@@ -4,9 +4,12 @@
   "private": true,
   "description": "RAJIB STUDIO — cinematic wedding photography & films. Next.js + React Three Fiber + GSAP.",
   "scripts": {
+    "images": "node scripts/optimize-images.mjs",
+    "predev": "npm run images",
     "dev": "next dev",
+    "prebuild": "npm run images",
     "build": "next build",
-    "start": "next start",
+    "preview": "npx --yes serve@14 out",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -28,6 +31,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "^0.186.0",
+    "sharp": "^0.35.5",
     "typescript": "^5.9.3"
   }
 }

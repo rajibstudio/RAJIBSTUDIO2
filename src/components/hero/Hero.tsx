@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { Component, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTier } from "@/lib/device";
@@ -20,6 +20,24 @@ const Experience = dynamic(() => import("../three/Experience"), { ssr: false, lo
 const getShot = () => heroState.shot;
 const getReady = () => heroState.sceneReady;
 
+/**
+ * If WebGL can't start on a device (blocked GPU, lost context, a failed chunk download),
+ * the hero quietly switches to the pre-rendered version instead of showing an empty frame.
+ */
+class SceneBoundary extends Component<{ children: ReactNode; onError: () => void }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch(error: unknown) {
+    console.warn("[hero] 3D scene unavailable — showing the pre-rendered version.", error);
+    this.props.onError();
+  }
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
+
 export function Hero() {
   const tier = useTier();
   const section = useRef<HTMLElement>(null);
@@ -30,7 +48,9 @@ export function Hero() {
   const shot = useSyncExternalStore(subscribe, getShot, () => 0);
   const ready = useSyncExternalStore(subscribe, getReady, () => false);
   const lenis = useLenis();
-  const live = tier === "high" || tier === "medium";
+  const [sceneFailed, setSceneFailed] = useState(false);
+  const live = (tier === "high" || tier === "medium") && !sceneFailed;
+  const mode = sceneFailed ? "low" : tier;
 
   useEffect(() => {
     const c = new URLSearchParams(window.location.search).get("capture");
@@ -58,7 +78,7 @@ export function Hero() {
       window.removeEventListener("load", onLoad);
       st.kill();
     };
-  }, [tier]);
+  }, [mode]);
 
   // Pointer → parallax
   useEffect(() => {
@@ -131,7 +151,7 @@ export function Hero() {
   }
 
   return (
-    <section ref={section} id="top" className={styles.hero} data-tier={tier ?? "pending"} aria-label="Rajib Studio — cinematic wedding photography">
+    <section ref={section} id="top" className={styles.hero} data-tier={mode ?? "pending"} aria-label="Rajib Studio — cinematic wedding photography">
       <div ref={stage} className={styles.stage}>
         {/* Poster: a pre-rendered frame of the scene, visible instantly while WebGL streams in */}
         <div className={styles.poster} data-hidden={live && ready}>
@@ -140,11 +160,13 @@ export function Hero() {
         </div>
 
         {live && (
-          <div className={styles.canvas} data-ready={ready}>
-            <Experience tier={tier} active={active} />
-          </div>
+          <SceneBoundary onError={() => setSceneFailed(true)}>
+            <div className={styles.canvas} data-ready={ready}>
+              <Experience tier={tier} active={active} />
+            </div>
+          </SceneBoundary>
         )}
-        {tier === "low" && <HeroFallback />}
+        {mode === "low" && <HeroFallback />}
 
         <div className={styles.grade} />
         <ViewfinderHUD mode={live ? "live" : "still"} visible={tier !== null} />

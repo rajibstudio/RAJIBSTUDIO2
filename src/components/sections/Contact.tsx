@@ -1,16 +1,55 @@
 "use client";
 
 import { useState } from "react";
-import { BRAND, PACKAGES } from "@/lib/content";
+import { BRAND, PACKAGES, PREVIEW } from "@/lib/content";
 import { Reveal } from "../ui/Reveal";
 import styles from "./contact.module.css";
 
+/**
+ * Optional form backend for the static site (e.g. a Formspree or Web3Forms endpoint),
+ * set at build time. Without it, enquiries are handed to WhatsApp with every detail pre-filled.
+ */
+const ENDPOINT = process.env.NEXT_PUBLIC_FORM_ENDPOINT;
+
 type Status = "idle" | "sending" | "sent" | "error";
+type Data = Record<string, string>;
+
+function compose(d: Data) {
+  const date = d.date ? new Date(`${d.date}T00:00:00`).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }) : "";
+  const lines = [
+    "Namaskar Rajib Studio! I'd like to check your availability.",
+    "",
+    `Name: ${d.name}${d.partner ? ` & ${d.partner}` : ""}`,
+    `Wedding date: ${date}`,
+    `Venue / city: ${d.venue}`,
+    d.package ? `Collection: ${d.package}` : null,
+    `Phone: ${d.phone}`,
+    `Email: ${d.email}`,
+    d.message ? `\n${d.message}` : null,
+  ];
+  return lines.filter((l) => l !== null).join("\n");
+}
+
+const whatsappLink = (text: string) => `https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent(text)}`;
+const emailLink = (text: string) => `mailto:${BRAND.email}?subject=${encodeURIComponent("Wedding enquiry")}&body=${encodeURIComponent(text)}`;
+
+/** A link when the contact details are real; plain text while the site is in preview. */
+function ContactLink({ href, children, external }: { href: string; children: React.ReactNode; external?: boolean }) {
+  if (PREVIEW) return <span>{children}</span>;
+  return external ? (
+    <a href={href} target="_blank" rel="noreferrer">
+      {children}
+    </a>
+  ) : (
+    <a href={href}>{children}</a>
+  );
+}
 
 export function Contact() {
   const [status, setStatus] = useState<Status>("idle");
-  const [error, setError] = useState<string>("");
-  const [summary, setSummary] = useState<string>("");
+  const [via, setVia] = useState<"whatsapp" | "form">("whatsapp");
+  const [message, setMessage] = useState("");
+  const [previewHit, setPreviewHit] = useState(false);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,18 +58,32 @@ export function Contact() {
       form.reportValidity();
       return;
     }
-    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
-    setStatus("sending");
-    setError("");
-    try {
-      const res = await fetch("/api/enquiry", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || "Something went wrong");
-      setSummary(`Namaskar ${data.name}! I'd like to book Rajib Studio for ${data.date} at ${data.venue}.`);
+    const data = Object.fromEntries(new FormData(form).entries()) as Data;
+    if (data.company) return; // honeypot: bots fill the hidden field
+    if (PREVIEW) {
+      setPreviewHit(true);
+      return;
+    }
+    const text = compose(data);
+    setMessage(text);
+
+    if (!ENDPOINT) {
+      // Opened synchronously inside the submit handler, so pop-up blockers allow it.
+      window.open(whatsappLink(text), "_blank", "noopener,noreferrer");
+      setVia("whatsapp");
       setStatus("sent");
       form.reset();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      const res = await fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(data) });
+      if (!res.ok) throw new Error(`Form service responded ${res.status}`);
+      setVia("form");
+      setStatus("sent");
+      form.reset();
+    } catch {
       setStatus("error");
     }
   };
@@ -59,21 +112,21 @@ export function Contact() {
             <div>
               <dt>Call</dt>
               <dd>
-                <a href={BRAND.phoneHref}>{BRAND.phone}</a>
+                <ContactLink href={BRAND.phoneHref}>{BRAND.phone}</ContactLink>
               </dd>
             </div>
             <div>
               <dt>WhatsApp</dt>
               <dd>
-                <a href={`https://wa.me/${BRAND.whatsapp}`} target="_blank" rel="noreferrer">
-                  Message us
-                </a>
+                <ContactLink href={`https://wa.me/${BRAND.whatsapp}`} external>
+                  {PREVIEW ? BRAND.phone : "Message us"}
+                </ContactLink>
               </dd>
             </div>
             <div>
               <dt>Email</dt>
               <dd>
-                <a href={`mailto:${BRAND.email}`}>{BRAND.email}</a>
+                <ContactLink href={`mailto:${BRAND.email}`}>{BRAND.email}</ContactLink>
               </dd>
             </div>
             <div>
@@ -87,12 +140,21 @@ export function Contact() {
           {status === "sent" ? (
             <div className={styles.thanks} role="status">
               <h3>Thank you.</h3>
-              <p>Your enquiry has reached the studio. We’ll check the calendar and write back within a day.</p>
-              <a className="btn btn-gold" href={`https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent(summary)}`} target="_blank" rel="noreferrer">
-                Continue on WhatsApp
+              {via === "whatsapp" ? (
+                <p>WhatsApp is opening with your details filled in — just press send. Prefer email? Use the button below.</p>
+              ) : (
+                <p>Your enquiry has reached the studio. We’ll check the calendar and write back within a day.</p>
+              )}
+              <a className="btn btn-gold" href={whatsappLink(message)} target="_blank" rel="noreferrer">
+                {via === "whatsapp" ? "Open WhatsApp again" : "Continue on WhatsApp"}
               </a>
-              <button type="button" className="btn btn-ghost" onClick={() => setStatus("idle")}>
-                Send another
+              {via === "whatsapp" && (
+                <a className="btn btn-ghost" href={emailLink(message)}>
+                  Send by email instead
+                </a>
+              )}
+              <button type="button" className={styles.again} onClick={() => setStatus("idle")}>
+                Send another enquiry
               </button>
             </div>
           ) : (
@@ -102,7 +164,7 @@ export function Contact() {
                 <Field label="Partner’s name" name="partner" autoComplete="off" />
               </div>
               <div className={styles.row}>
-                <Field label="Phone / WhatsApp" name="phone" type="tel" required autoComplete="tel" pattern="[0-9 +()-]{8,}" />
+                <Field label="Phone / WhatsApp" name="phone" type="tel" required autoComplete="tel" pattern="[\d\s+\(\)\-]{8,}" />
                 <Field label="Email" name="email" type="email" required autoComplete="email" />
               </div>
               <div className={styles.row}>
@@ -129,14 +191,23 @@ export function Contact() {
               <input type="text" name="company" tabIndex={-1} autoComplete="off" className="visually-hidden" aria-hidden="true" />
               <div className={styles.actions}>
                 <button type="submit" className="btn btn-gold" disabled={status === "sending"}>
-                  {status === "sending" ? "Sending…" : "Check availability"}
+                  {status === "sending" ? "Sending…" : ENDPOINT ? "Check availability" : "Send on WhatsApp"}
                 </button>
                 {status === "error" && (
                   <p className={styles.error} role="alert">
-                    {error}
+                    We couldn’t send that right now.{" "}
+                    <a href={whatsappLink(message)} target="_blank" rel="noreferrer">
+                      Send it on WhatsApp
+                    </a>{" "}
+                    instead.
                   </p>
                 )}
               </div>
+              {PREVIEW && (
+                <p className={styles.preview} data-hit={previewHit} role={previewHit ? "status" : undefined}>
+                  Preview site — online booking opens soon, so enquiries aren’t being received yet.
+                </p>
+              )}
             </form>
           )}
         </Reveal>

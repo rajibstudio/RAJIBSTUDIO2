@@ -2,7 +2,7 @@
  * Re-renders the 8 hero shots to /public/images/scene/shot-N.jpg
  * (used as the instant poster and as the no-WebGL fallback on phones).
  *
- *   npm run build && npm start            # in one terminal
+ *   npm run dev                            # in one terminal
  *   npm i -D playwright && npx playwright install chromium
  *   node scripts/capture-stills.mjs        # in another
  *
