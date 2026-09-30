@@ -86,7 +86,8 @@ export function Player({ capture }: { capture?: number }) {
           tour.jump = null;
           tour.fade = 0;
           tour.guided.t = 0;
-          setMode(j.then);
+          // Keep the menu open if the visitor pressed Esc while the teleport was running
+          if (tour.mode !== "paused") setMode(j.then);
         }
       }
     } else if (tour.mode === "loading" || tour.mode === "intro") {

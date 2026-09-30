@@ -292,8 +292,15 @@ export const tex = {
         g.addColorStop(0.5, "#4c8f33");
         g.addColorStop(1, "#2d6a22");
         c.fillStyle = g;
+        // Rounded rectangle drawn by hand: CanvasRenderingContext2D.roundRect is missing on older iOS
+        const [x0, y0, x1, y1, r] = [6, 10, w - 6, h - 10, 26];
         c.beginPath();
-        c.roundRect(6, 10, w - 12, h - 20, 26);
+        c.moveTo(x0 + r, y0);
+        c.arcTo(x1, y0, x1, y1, r);
+        c.arcTo(x1, y1, x0, y1, r);
+        c.arcTo(x0, y1, x0, y0, r);
+        c.arcTo(x0, y0, x1, y0, r);
+        c.closePath();
         c.fill();
         c.strokeStyle = "rgba(190,230,140,0.35)";
         c.lineWidth = 1;
