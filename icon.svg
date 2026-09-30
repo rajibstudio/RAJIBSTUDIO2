@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#0a0808"/>
+  <g fill="none" stroke="#d7b46a" stroke-width="2.4" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="26"/>
+    <path id="b" d="M32 32 L32 12.5 A19.5 19.5 0 0 1 46.77 19.26 Z"/>
+    <use href="#b" transform="rotate(51.43 32 32)"/>
+    <use href="#b" transform="rotate(102.86 32 32)"/>
+    <use href="#b" transform="rotate(154.29 32 32)"/>
+    <use href="#b" transform="rotate(205.71 32 32)"/>
+    <use href="#b" transform="rotate(257.14 32 32)"/>
+    <use href="#b" transform="rotate(308.57 32 32)"/>
+  </g>
+</svg>
