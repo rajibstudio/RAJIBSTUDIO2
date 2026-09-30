@@ -1,0 +1,228 @@
+:root {
+  --ink: #0a0808;
+  --ink-2: #110d0d;
+  --ink-3: #1a1414;
+  --plum: #241329;
+  --plum-2: #3b2145;
+  --gold: #c9a45c;
+  --gold-2: #e4c786;
+  --gold-3: #8c6a2f;
+  --ivory: #f3ead8;
+  --ivory-dim: rgba(243, 234, 216, 0.66);
+  --ivory-faint: rgba(243, 234, 216, 0.36);
+  --line: rgba(201, 164, 92, 0.18);
+
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --section: clamp(6rem, 14vw, 12rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --font-mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, monospace;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  background: var(--ink);
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--ivory);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 1px solid var(--gold-2);
+  outline-offset: 4px;
+}
+
+/* Film grain over the whole site — a single tiny, static SVG noise tile */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ---------- shared primitives ---------- */
+
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.section {
+  position: relative;
+  padding: var(--section) 0;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--gold-2);
+}
+.eyebrow::before {
+  content: "";
+  width: 38px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  font-size: clamp(2.6rem, 6vw, 5.8rem);
+}
+.display em {
+  font-style: italic;
+  color: var(--gold-2);
+}
+
+.lede {
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  color: var(--ivory-dim);
+  max-width: 36rem;
+}
+
+.bn {
+  font-family: var(--font-bengali);
+}
+
+.btn {
+  --h: 52px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  height: var(--h);
+  padding: 0 1.9rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  overflow: hidden;
+  isolation: isolate;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: color 0.5s var(--ease-out), border-color 0.5s, transform 0.5s var(--ease-out);
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  transform: translateY(101%);
+  transition: transform 0.6s var(--ease-out);
+}
+.btn:hover::before {
+  transform: none;
+}
+.btn-gold {
+  color: #1b1208;
+  background: linear-gradient(110deg, #b88b3e, #e7ca88 45%, #c9a45c 70%, #a47a31);
+  box-shadow: 0 10px 40px -12px rgba(201, 164, 92, 0.55);
+}
+.btn-gold::before {
+  background: var(--ivory);
+}
+.btn-ghost {
+  color: var(--ivory);
+  border-color: rgba(243, 234, 216, 0.35);
+  backdrop-filter: blur(6px);
+}
+.btn-ghost::before {
+  background: var(--ivory);
+}
+.btn-ghost:hover {
+  color: var(--ink);
+  border-color: var(--ivory);
+}
+.btn-sm {
+  --h: 42px;
+  padding: 0 1.3rem;
+  font-size: 0.64rem;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.2s !important;
+  }
+}

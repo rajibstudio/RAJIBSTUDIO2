@@ -1,0 +1,33 @@
+{
+  "name": "rajib-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RAJIB STUDIO — cinematic wedding photography & films. Next.js + React Three Fiber + GSAP.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.1",
+    "@react-three/postprocessing": "^3.1.3",
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.26",
+    "maath": "^0.10.8",
+    "next": "^16.3.7",
+    "postprocessing": "^6.39.5",
+    "react": "~19.3.0",
+    "react-dom": "~19.3.0",
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/three": "^0.186.0",
+    "typescript": "^5.9.3"
+  }
+}

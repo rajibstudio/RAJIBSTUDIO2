@@ -1,0 +1,136 @@
+.services {
+  background: var(--ink);
+  overflow: hidden;
+}
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  max-width: 52rem;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.list li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 4rem 1.1fr 1fr 2rem;
+  align-items: center;
+  gap: 2rem;
+  padding: clamp(1.4rem, 2.4vw, 2.2rem) 0;
+  border-bottom: 1px solid var(--line);
+  cursor: default;
+  transition: padding 0.6s var(--ease-out);
+}
+.list li::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(201, 164, 92, 0.08), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.list li[data-active="true"]::before {
+  opacity: 1;
+}
+.list li[data-active="true"] {
+  padding-left: 1.2rem;
+}
+.no {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--gold);
+}
+.list h3 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.6rem, 3vw, 2.8rem);
+  line-height: 1.05;
+  transition: color 0.4s;
+}
+.list li[data-active="true"] h3 {
+  color: var(--gold-2);
+}
+.list p {
+  color: var(--ivory-dim);
+  font-size: 0.95rem;
+}
+.arrow {
+  font-size: 1.2rem;
+  color: var(--gold);
+  transform: translateX(-10px);
+  opacity: 0;
+  transition: transform 0.6s var(--ease-out), opacity 0.4s;
+}
+.list li[data-active="true"] .arrow {
+  transform: none;
+  opacity: 1;
+}
+.thumb {
+  display: none;
+}
+.float {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  width: 280px;
+  height: 360px;
+  margin: -180px 0 0 -140px;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  scale: 0.85;
+  rotate: -3deg;
+  transition: opacity 0.5s, scale 0.7s var(--ease-out);
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9);
+}
+.float[data-visible="true"] {
+  opacity: 1;
+  scale: 1;
+}
+.float img {
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.float img[data-on="true"] {
+  opacity: 1;
+}
+@media (max-width: 900px), (pointer: coarse) {
+  .float {
+    display: none;
+  }
+  .list li {
+    grid-template-columns: 1fr 96px;
+    grid-template-areas: "no thumb" "title thumb" "text thumb";
+    gap: 0.4rem 1.2rem;
+  }
+  .no {
+    grid-area: no;
+  }
+  .list h3 {
+    grid-area: title;
+  }
+  .list p {
+    grid-area: text;
+  }
+  .arrow {
+    display: none;
+  }
+  .thumb {
+    grid-area: thumb;
+    display: block;
+    position: relative;
+    width: 96px;
+    height: 120px;
+    overflow: hidden;
+  }
+  .thumb img {
+    object-fit: cover;
+  }
+}

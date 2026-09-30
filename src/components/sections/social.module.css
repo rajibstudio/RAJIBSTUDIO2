@@ -1,0 +1,63 @@
+.social {
+  background: var(--ink);
+}
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+.head h2 {
+  margin-top: 1rem;
+}
+.head h2 a:hover {
+  color: var(--gold-2);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+}
+.tile {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 0;
+  padding: 0;
+  background: var(--ink-3);
+  cursor: zoom-in;
+}
+.tile img {
+  object-fit: cover;
+  transition: transform 1.2s var(--ease-out);
+}
+.tile:hover img {
+  transform: scale(1.08);
+}
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(36, 19, 41, 0.55);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.overlay svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: var(--ivory);
+  stroke-width: 1.2;
+}
+.tile:hover .overlay,
+.tile:focus-visible .overlay {
+  opacity: 1;
+}
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

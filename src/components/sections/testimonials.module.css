@@ -1,0 +1,136 @@
+.testimonials {
+  position: relative;
+  min-height: 92svh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: #070506;
+  padding: var(--section) 0;
+}
+.bg {
+  position: absolute;
+  inset: -4%;
+  opacity: 0;
+  transition: opacity 2s var(--ease-in-out);
+}
+.bg img {
+  object-fit: cover;
+  filter: blur(18px) saturate(0.8) brightness(0.32);
+  transform: scale(1.1);
+}
+.bg[data-on="true"] {
+  opacity: 1;
+}
+.testimonials::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(70% 70% at 50% 50%, transparent, rgba(7, 5, 6, 0.85));
+}
+.inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 3rem;
+}
+.quotes {
+  display: grid;
+  width: 100%;
+  max-width: 62rem;
+}
+.quote {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(8px);
+  transition: opacity 1.2s var(--ease-out), transform 1.2s var(--ease-out), filter 1.2s;
+  pointer-events: none;
+}
+.quote[data-on="true"] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  pointer-events: auto;
+}
+.quote blockquote {
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.7rem, 3.4vw, 3.2rem);
+  line-height: 1.25;
+  color: var(--ivory);
+}
+.mark {
+  display: block;
+  font-size: 5rem;
+  line-height: 0.6;
+  color: var(--gold);
+  font-style: normal;
+}
+.quote figcaption {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.quote strong {
+  font-weight: 400;
+  font-size: 0.8rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold-2);
+}
+.quote figcaption span {
+  color: var(--ivory-faint);
+  font-size: 0.85rem;
+}
+.dots {
+  display: flex;
+  gap: 0.8rem;
+}
+.dots button {
+  width: 56px;
+  height: 20px;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+}
+.dots button::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(243, 234, 216, 0.25);
+}
+.dots i {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--gold-2);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.dots button[data-on="true"] i {
+  transform: scaleX(1);
+}
+.dots i[data-run="true"] {
+  animation: run 7s linear forwards;
+}
+@keyframes run {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
